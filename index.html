@@ -9,26 +9,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- WWF Webfont – self-hosted -->
+  <!-- WWF Webfont – EIN Schnitt (synthetisches Bold erlaubt) -->
   <style>
     @font-face{
       font-family:"WWF";
-      src: url("fonts/WWF-Regular.woff2") format("woff2"),
-           url("fonts/WWF-Regular.woff") format("woff");
-      font-weight:400; font-style:normal; font-display:swap;
-    }
-    @font-face{
-      font-family:"WWF";
-      src: url("fonts/WWF-Bold.woff2") format("woff2"),
-           url("fonts/WWF-Bold.woff") format("woff");
-      font-weight:700; font-style:normal; font-display:swap;
+      src: url("fonts/WWF.woff2") format("woff2"),
+           url("fonts/WWF.woff") format("woff");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
     }
 
-    :root{ --bg:#fff; --fg:#000; --maxw:1100px; }
+    :root{ --bg:#fff; --fg:#000; --maxw:1100px; --page-pad: clamp(16px,4vw,32px); }
     html,body{height:100%}
     body{
       margin:0; background:var(--bg); color:var(--fg);
       font-family:"WWF","Open Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      font-synthesis: weight style; /* da nur ein Schriftschnitt */
       -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
       display:flex; flex-direction:column; min-height:100svh;
     }
@@ -37,7 +34,7 @@
     .site-header{ border-bottom:1px solid #e6e6e6; background:#fff; }
     .container{
       width:100%; max-width:var(--maxw); margin-inline:auto;
-      padding:clamp(12px,2.5vw,24px) clamp(16px,4vw,32px);
+      padding:clamp(12px,2.5vw,24px) var(--page-pad);
     }
     .header-inner{ display:flex; align-items:center; justify-content:flex-start; gap:16px; }
     .brand{ display:inline-flex; align-items:center; text-decoration:none; color:inherit; }
@@ -53,11 +50,23 @@
       max-width:500px; margin-inline:auto;
     }
 
-    /* Desktop/landscape counter (inline) */
+    /* Desktop/Landscape Counter – FULL BLEED über die gesamte Viewport-Breite */
+    .counter-inline-wrap{
+      width:100vw;                 /* volle Breite */
+      margin-left:50%;             /* zentrierter Full-Bleed-„Trick“ */
+      transform:translateX(-50%);
+      padding-inline: var(--page-pad);
+      box-sizing:border-box;
+    }
     .counter-inline{
-      font-variant-numeric:tabular-nums; letter-spacing:.02em;
-      font-weight:700; font-size:clamp(48px,12vw,160px);
-      line-height:1; max-width:500px; margin-inline:auto;
+      font-variant-numeric:tabular-nums;
+      letter-spacing:.02em;
+      font-weight:700;             /* synthetisch fett */
+      /* groß & responsive: auf Viewportbreite skalieren */
+      font-size: clamp(64px, 12vw, 220px);
+      line-height:1;
+      text-align:center;
+      white-space:nowrap;
     }
 
     /* Mobile portrait counter (stacked with labels on the right) */
@@ -70,7 +79,7 @@
         padding-block:0;
       }
       .hero .container{ width:100%; max-width:620px; }
-      .counter-inline{ display:none; }
+      .counter-inline-wrap{ display:none; } /* im Mobile verwenden wir das gestapelte Layout */
       .counter-stacked{
         display:grid;
         grid-template-columns: auto 1fr;
@@ -81,11 +90,13 @@
         margin-top: clamp(8px,3vh,24px);
       }
       .value{
-        font-weight:700; font-size: clamp(56px, 22vh, 180px);
+        font-weight:700;
+        font-size: clamp(56px, 22vh, 180px);
         line-height:.9; justify-self:start;
       }
       .unit{
-        font-weight:600; font-size: clamp(16px, 5.2vw, 28px);
+        font-weight:600;
+        font-size: clamp(16px, 5.2vw, 28px);
         line-height:1; justify-self:start;
       }
       h1{ font-size: clamp(18px, 6vw, 32px); max-width:none; }
@@ -121,11 +132,15 @@
     <section class="hero">
       <div class="container">
         <h1>Time to reach a strong UN Plastics Treaty</h1>
+      </div>
 
-        <!-- Desktop/Querformat -->
+      <!-- Desktop/Querformat: FULL-BLEED über gesamte Breite -->
+      <div class="counter-inline-wrap">
         <div class="counter-inline" id="counterInline" aria-live="polite">00:00:00</div>
+      </div>
 
-        <!-- Mobile/Hochformat -->
+      <!-- Mobile/Hochformat -->
+      <div class="container">
         <div class="counter-stacked" aria-live="polite">
           <div class="value" id="hVal">00</div><div class="unit">Hours</div>
           <div class="value" id="mVal">00</div><div class="unit">Minutes</div>
